@@ -9,12 +9,6 @@ interface Props {
   params: { id: string };
 }
 
-/**
- *  @method  GET
- *  @route   ~/api/products/:id
- *  @desc    Get Single Product By Id
- *  @access  public
- */
 export async function GET(request: NextRequest, { params }: Props) {
   try {
     const product = await prisma.product.findUnique({
@@ -51,12 +45,6 @@ export async function GET(request: NextRequest, { params }: Props) {
   }
 }
 
-/**
- *  @method  PUT
- *  @route   ~/api/products/:id
- *  @desc    Update Product
- *  @access  private (only admin can update product)
- */
 
 export async function PUT(request: NextRequest, { params }: Props) {
   try {
@@ -78,11 +66,6 @@ export async function PUT(request: NextRequest, { params }: Props) {
         { status: 404 }
       );
     }
-    // const formData = await request.formData();
-    // const title = formData.get('title') as string;
-    // const description = formData.get('description') as string;
-    // const price = parseFloat(formData.get('price') as string);
-    // const image = formData.get('image') as File | null;
   
     const body = (await request.json()) as UpdateProductDto;
 
@@ -93,13 +76,6 @@ export async function PUT(request: NextRequest, { params }: Props) {
         { status: 400 }
       );
     }
-    // @ts-ignore */}
-    // const imageFileName = `${Date.now()}-${image.name}`;
-    // const imagePath = path.join(uploadDir, imageFileName);
-    // // @ts-ignore */}
-    // const imageBuffer = await image.arrayBuffer();
-    // // @ts-ignore */}
-    // await fs.writeFile(imagePath, Buffer.from(imageBuffer));
 
     const updatedProduct: Product = await prisma.product.update({
       where:{id:parseInt(params.id)},
@@ -121,12 +97,6 @@ export async function PUT(request: NextRequest, { params }: Props) {
   }
 }
 
-/**
- *  @method  DELETE
- *  @route   ~/api/products/:id
- *  @desc    Delete Products
- *  @access  private (only admin can delete product)
- */
 export async function DELETE(request: NextRequest, { params }: Props) {
   try {
     const user = verifyToken(request);

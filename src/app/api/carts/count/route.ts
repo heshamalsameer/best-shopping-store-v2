@@ -1,39 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/utils/db';
-import { verifyToken } from '@/utils/verifyToken';
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/utils/db";
+import { verifyToken } from "@/utils/verifyToken";
 
-
-/**
- *  @method  GET
- *  @route   ~/api/carts/count
- *  @desc    Get Carts Count
- *  @access  public
- */
 export async function GET(request: NextRequest) {
-    try {
-        const user = verifyToken(request);
-    if (user === null ) {
-      return NextResponse.json(
-        { message: "only admin, access denied" },
-        { status: 403 }
-      );
+  try {
+    const user = verifyToken(request);
+    if (user === null) {
+      return NextResponse.json({ message: "only logged in user, access denied" }, { status: 401 });
     }
 
-    if (user.isAdmin) {
-      const cartsCount = await prisma.cart.count();
-      return NextResponse.json(cartsCount, { status: 200 });
-    }
-
-    const cartsCount = await prisma.cart.count({
-      where:{userId: user.id}
-    });
+    const items = await prisma.cart.findMany({ where: { userId: user.id }, select: { quantity: true } });
+    const cartsCount = items.reduce((s, i) => s + i.quantity, 0);
 
     return NextResponse.json({ cartsCount }, { status: 200 });
-
-    } catch (error) {
-        return NextResponse.json(
-            { message: 'internal server error' },
-            { status: 500 }
-        );
-    }
+  } catch (error) {
+    return NextResponse.json({ message: "internal server error" }, { status: 500 });
+  }
 }

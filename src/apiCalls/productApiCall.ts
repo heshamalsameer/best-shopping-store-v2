@@ -2,7 +2,6 @@ import { Cart, Product } from "@prisma/client";
 import { DOMAIN } from "@/utils/constants";
 import { SingleProduct } from "@/utils/types";
 
-// Get products based on pageNumber
 export async function getProducts(
   pageNumber: string | undefined
 ): Promise<Product[]> {
@@ -19,7 +18,6 @@ export async function getProducts(
   return response.json();
 }
 
-// Get products count
 export async function getProductsCount(): Promise<number> {
   const response = await fetch(`${DOMAIN}/api/products/count`, {
     cache: "no-store",
@@ -33,12 +31,12 @@ export async function getProductsCount(): Promise<number> {
   return count;
 }
 
-// Get products based on searchText
 export async function getProductsBasedOnSearch(
   searchText: string
 ): Promise<Product[]> {
   const response = await fetch(
-    `${DOMAIN}/api/products/search?searchText=${searchText}`
+    `${DOMAIN}/api/products/search?searchText=${encodeURIComponent(searchText)}`,
+    { cache: "no-store" }
   );
 
   if (!response.ok) {
@@ -48,7 +46,6 @@ export async function getProductsBasedOnSearch(
   return response.json();
 }
 
-// Get single product by id
 export async function getSingleProduct(
   productId: string
 ): Promise<SingleProduct> {
@@ -63,8 +60,6 @@ export async function getSingleProduct(
   return response.json();
 }
 
-
-// Get products in cart by user id
 export async function getProductsCart(
   token:string
 ): Promise<Cart[]> {
@@ -98,7 +93,6 @@ export async function getProductsCartNumber(
       cache: "no-store" 
     }
   );
-// console.log(response);
 
   if (!response.ok) {
     throw new Error("Failed to fetch carts products count");

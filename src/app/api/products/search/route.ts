@@ -1,12 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/utils/db";
 
-/**
- *  @method  GET
- *  @route   ~/api/products/search?searchText=value
- *  @desc    Get Products By Search Text
- *  @access  public
- */
 export async function GET(request: NextRequest) {
   try {
     const searchText = request.nextUrl.searchParams.get("searchText");
@@ -15,8 +9,6 @@ export async function GET(request: NextRequest) {
       products = await prisma.product.findMany({
         where: {
           title: {
-            // equals:searchText,
-            // startsWith:searchText,
             contains: searchText,
             mode: "insensitive", 
           },

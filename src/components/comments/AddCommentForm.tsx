@@ -30,17 +30,17 @@ const AddCommentForm = ({ articleId }: AddCommentFormProps) => {
   return (
     <form onSubmit={formSubmitHandler}>
       <input
-        className="rounded-lg text-xl p-2 w-full bg-white focus:shadow-md"
+        className="rounded-lg text-xl p-2 w-full bg-white border-2 border-transparent outline-none focus:border-blue-600 transition"
         type="text"
-        placeholder="Add a comment..."
+        placeholder="Write a review…"
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
       <button
         type="submit"
-        className="bg-green-700 text-white mt-2 p-1 w-min text-xl rounded-lg hover:bg-green-900 transition"
+        className="bg-green-700 text-white mt-2 py-1 px-4 text-lg rounded-lg hover:bg-green-900 transition"
       >
-        Comment
+        Post review
       </button>
     </form>
   );

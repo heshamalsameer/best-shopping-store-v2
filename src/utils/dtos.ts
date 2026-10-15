@@ -44,3 +44,18 @@ export interface CreateCartDto {
 export interface UpdateCommentDto {
     text: string;
 }
+export interface AddToCartDto {
+    productId: number;
+    quantity?: number;
+}
+
+export interface CheckoutDto {
+    fullName: string;
+    phone: string;
+    city: string;
+    address: string;
+    notes?: string;
+    coupon?: string;
+    paymentMethod: "CARD" | "CASH";
+    card?: { number: string; expiry: string; cvc: string; name: string };
+}

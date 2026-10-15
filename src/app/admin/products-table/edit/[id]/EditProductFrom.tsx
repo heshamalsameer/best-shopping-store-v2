@@ -20,8 +20,6 @@ const EditProductForm = ({ product }: EditProductFormProps) => {
   const [isLoading, setisLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
 
-  //   const [title, setTitle] = useState(product.title);
-  //   const [description, setDescription] = useState(product.description);
   const [formData, setFormData] = useState({
     title: product.title,
     description: product.description,
@@ -38,29 +36,13 @@ const EditProductForm = ({ product }: EditProductFormProps) => {
     }));
   };
 
-  // function onImageChange(e: any) {
-  //   const { name, files } = e.target;
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     [name]: files[0],
-  //   }));
-  // }
   const formSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     setisLoading(true);
-    // const form = new FormData();
-    // form.append("title", formData.title);
-    // form.append("description", formData.description);
-    // // @ts-ignore */}
-    // form.append("price", formData.price);
-    // form.append("image", formData.image);
-
-    // if (title === "") return toast.error("Title is required");
-    // if (description === "") return toast.error("Description is required");
 
     try {
       await axios.put(`${DOMAIN}/api/products/${product.id}`, formData);
-      dispatch(editProduct(product));
+      dispatch(editProduct({ ...product, ...formData, price: String(formData.price) }));
 
       toast.success("product updated");
       setisLoading(false);
@@ -75,7 +57,6 @@ const EditProductForm = ({ product }: EditProductFormProps) => {
   return (
     <form
       onSubmit={formSubmitHandler}
-      // action={create}
       className="flex flex-col"
     >
       <input
@@ -94,15 +75,7 @@ const EditProductForm = ({ product }: EditProductFormProps) => {
         placeholder="Enter Product Price"
         onChange={handleChange}
       />
-      <UploadImage setFormData={setFormData} />
-      {/* <input
-    className="mb-4 border rounded p-2 text-xl"
-    type="file"
-    name="image"
-    placeholder="Enter Product Image"
-    accept="image/*"
-    onChange={onImageChange}
-  /> */}
+      <UploadImage setFormData={setFormData} image={formData.image} />
       <textarea
         className="mb-4 p-2 lg:text-xl rounded resize-none"
         rows={5}

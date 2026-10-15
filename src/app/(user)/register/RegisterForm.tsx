@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { DOMAIN } from "@/utils/constants";
 import ButtonSpinner from "@/components/ButtonSpinner";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
@@ -19,6 +20,7 @@ const RegisterForm = () => {
     if (username === "") return toast.error("Username is required");
     if (email === "") return toast.error("Email is required");
     if (password === "") return toast.error("Password is required");
+    if (password.length < 6) return toast.error("Password should be at least 6 characters");
 
     try {
       setLoading(true);
@@ -27,12 +29,11 @@ const RegisterForm = () => {
         password,
         username,
       });
+      toast.success("Your account is ready");
       router.replace("/");
-      setLoading(false);
       router.refresh();
     } catch (error: any) {
       toast.error(error?.response?.data.message);
-      console.log(error);
       setLoading(false);
     }
   };
@@ -40,33 +41,36 @@ const RegisterForm = () => {
   return (
     <form onSubmit={formSubmitHandler} className="flex flex-col">
       <input
-        className="mb-4 border rounded p-2 text-xl"
+        className="mb-4 border-2 rounded p-2 text-xl outline-none focus:border-blue-600 transition"
         type="text"
-        placeholder="Enter Your Username"
+        placeholder="Your name" autoComplete="name"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
       <input
-        className="mb-4 border rounded p-2 text-xl"
+        className="mb-4 border-2 rounded p-2 text-xl outline-none focus:border-blue-600 transition"
         type="email"
-        placeholder="Enter Your Email"
+        placeholder="you@example.com" autoComplete="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
-        className="mb-4 border rounded p-2 text-xl"
+        className="mb-4 border-2 rounded p-2 text-xl outline-none focus:border-blue-600 transition"
         type="password"
-        placeholder="Enter Your Password"
+        placeholder="At least 6 characters" autoComplete="new-password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
       <button
         disabled={loading}
         type="submit"
-        className="text-2xl text-white bg-blue-800 p-2 rounded-lg font-bold"
+        className="text-2xl text-white bg-blue-800 hover:bg-blue-900 p-2 rounded-lg font-bold transition disabled:opacity-70"
       >
         {loading ? <ButtonSpinner /> : "Register"}
       </button>
+      <p className="text-gray-600 mt-5 text-center">
+        Already have an account? <Link href="/login" className="text-blue-700 font-semibold hover:underline">Log in</Link>
+      </p>
     </form>
   );
 };

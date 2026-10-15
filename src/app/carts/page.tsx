@@ -1,26 +1,26 @@
-import { Cart } from "@prisma/client";
-import {
-  getProductsCart,
-  getProductsCartNumber,
-} from "@/apiCalls/productApiCall";
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import CartClientPage from "@/components/cart/CartClientPage"; // New client component
+import prisma from "@/utils/db";
+import { verifyTokenForPage } from "@/utils/verifyToken";
+import CartClientPage from "@/components/cart/CartClientPage";
+import { CartLine } from "@/utils/types";
 
-const AboutPage = async () => {
+export const metadata: Metadata = { title: "Your cart" };
+
+const CartPage = async () => {
   const token = cookies().get("jwtToken")?.value || "";
-  if (!token) redirect("/");
+  const payload = verifyTokenForPage(token);
+  if (!payload) redirect("/login");
 
-  const productsCart: Cart[] = await getProductsCart(token);
-  const numberOfCartData = (await getProductsCartNumber(token)) || 0;
+  const rows = await prisma.cart.findMany({
+    where: { userId: payload.id },
+    include: { product: true },
+    orderBy: { createdAt: "asc" },
+  });
+  const productsCart = JSON.parse(JSON.stringify(rows)) as CartLine[];
 
-  return (
-    <CartClientPage
-      productsCart={productsCart}
-      // @ts-ignore */}
-      numberOfCartData={numberOfCartData}
-    />
-  );
+  return <CartClientPage productsCart={productsCart} />;
 };
 
-export default AboutPage;
+export default CartPage;

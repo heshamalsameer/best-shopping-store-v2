@@ -17,6 +17,8 @@ export default function DeleteProductModal({
   isOpen,
   setIsopen,
   productId,
+  title,
+  onDeleted,
 }: any) {
   const [isLoading, setisLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -25,17 +27,17 @@ export default function DeleteProductModal({
   const DeleteProduct = async () => {
     setisLoading(true);
     try {
-      const res = await axios.delete(`${DOMAIN}/api/carts/${productId}`);
-      dispatch(removeFromCart(res.data));
-      toast.success("product is deleted from cart");
+      await axios.delete(`${DOMAIN}/api/carts/${productId}`);
+      dispatch(removeFromCart(productId));
+      toast.success("Removed from your cart");
 
       setisLoading(false);
-      router.refresh();
       setIsopen(false);
+      if (onDeleted) onDeleted();
+      else router.refresh();
     } catch (error) {
       toast.error("Error delete product");
       setisLoading(false);
-      console.error("Error delete item:", error);
     }
   };
 
@@ -59,14 +61,14 @@ export default function DeleteProductModal({
                     className="size-6 text-red-600"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
                     aria-hidden="true"
                     data-slot="icon"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
                     />
                   </svg>
@@ -76,10 +78,10 @@ export default function DeleteProductModal({
                     as="h3"
                     className="text-xl  font-bold text-gray-900"
                   >
-                    Delete product from cart
+                    Remove from cart?
                   </DialogTitle>
                   <div className="mt-2 text-lg">
-                    Are you sure you want to delete this product..?
+                    {title ? <><strong>{title}</strong> will be removed from your cart.</> : "This product will be removed from your cart."}
                   </div>
                 </div>
               </div>
@@ -87,6 +89,7 @@ export default function DeleteProductModal({
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
                 type="button"
+                disabled={isLoading}
                 onClick={() => DeleteProduct()}
                 className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
               >
@@ -96,7 +99,7 @@ export default function DeleteProductModal({
                   }  animate-spin h-5 w-5 mr-3 rounded-full border-t-4 border-s-4 border-gray-100`}
                   viewBox="0 0 24 24"
                 ></svg>
-                Delete Product
+                Remove
               </button>
               <button
                 type="button"

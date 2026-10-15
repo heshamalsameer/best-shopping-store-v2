@@ -19,14 +19,13 @@ const LogoutButton = () => {
     } catch (error) {
       toast.warning("Something went wrong");
       setisLoading(false);
-      console.log(error);
     }
   };
 
   return (
     <button
       onClick={logoutHandler}
-      className="bg-blue-800 hover:bg-blue-950 text-xl font-semibold p-1 px-3 text-gray-200 rounded"
+      className="bg-blue-800 hover:bg-blue-950 text-lg md:text-xl font-semibold p-1 px-3 text-gray-200 rounded transition"
     >
       {isLoading ? <ButtonSpinner /> : "Logout"}
     </button>

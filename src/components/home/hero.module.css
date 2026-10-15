@@ -1,5 +1,6 @@
 .hero {
-    height: calc(100vh - 150px);
+    min-height: calc(100vh - 230px);
+    gap: 30px;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -15,6 +16,9 @@
 
 .desc {
     font-size: 21px;
+    max-width: 520px;
+    color: #333;
+    margin-top: 6px;
 }
 
 .services {

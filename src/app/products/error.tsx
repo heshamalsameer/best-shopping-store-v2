@@ -8,7 +8,6 @@ interface ErrorPageProps {
 const ProductErrorPage = (props: ErrorPageProps) => {
   return (
     <div className="fix-height pt-7 text-center">
-      <div className="">this is custom error for products page </div>
       <div className="text-3xl text-red-600 font-semibold ">
         something went wrong
       </div>

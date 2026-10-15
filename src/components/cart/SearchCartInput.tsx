@@ -10,7 +10,6 @@ const SearchCartInput = () => {
     e.preventDefault();
 
     console.log({ searchText });
-    // router.push(`/articles/search`);
     router.push(`/products/search?searchText=${searchText}`);
   };
 

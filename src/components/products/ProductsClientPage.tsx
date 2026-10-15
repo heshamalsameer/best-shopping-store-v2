@@ -27,17 +27,18 @@ const ProductsClientPage: React.FC<ProductsClientPageProps> = ({
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    // Dispatch products to Redux
-    // @ts-ignore */}
     dispatch(addProducts(products));
   }, [products, dispatch]);
 
   return (
     <section className="container  fix-height m-auto px-5">
       <SearchProductInput />
-      <div className="flex items-center justify-center flex-wrap gap-7">
+      {products.length === 0 && (
+        <p className="text-center text-gray-600 text-xl py-20">No products yet — check back soon.</p>
+      )}
+      <div className="flex items-stretch justify-center flex-wrap gap-7 mb-6">
         {products.map((item, index) => (
-          <ProductItem product={item} key={index} token={token} />
+          <ProductItem product={item} key={item.id} token={token} index={index} />
         ))}
       </div>
       <Pagination pageNumber={pageNumber} route="/products" pages={pages} />

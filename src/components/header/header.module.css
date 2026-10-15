@@ -89,3 +89,89 @@
     margin: 12px 0;
   }
 }
+
+.navLink {
+  position: relative;
+  transition: color 0.2s;
+}
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 3px;
+  border-radius: 3px;
+  background-color: rgb(19, 19, 126);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.navLink:hover::after,
+.active::after {
+  transform: scaleX(1);
+}
+.active {
+  color: rgb(19, 19, 126);
+}
+.badge {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background-color: #0000ff;
+  color: white;
+  font-size: 13px;
+  display: inline-grid;
+  place-items: center;
+  margin-left: 2px;
+}
+.user {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgb(19, 19, 126);
+  font-size: 20px;
+}
+.user:hover {
+  color: #0000ff;
+}
+@media (max-width: 840px) {
+  .header {
+    padding: 0 20px;
+    height: 80px;
+  }
+  .btn {
+    font-size: 17px;
+  }
+  .navLink::after {
+    display: none;
+  }
+}
+
+@media (max-width: 840px) {
+  .navbar > div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo {
+    display: flex;
+    font-size: 30px;
+  }
+  .logoText {
+    display: none;
+  }
+  .open > * {
+    animation: menu-in 0.35s ease-out both;
+  }
+  .open > *:nth-child(2) { animation-delay: 0.04s; }
+  .open > *:nth-child(3) { animation-delay: 0.08s; }
+  .open > *:nth-child(4) { animation-delay: 0.12s; }
+  .open > *:nth-child(5) { animation-delay: 0.16s; }
+  .open > *:nth-child(6) { animation-delay: 0.2s; }
+}
+@keyframes menu-in {
+  from { opacity: 0; transform: translateX(-12px); }
+  to { opacity: 1; transform: none; }
+}

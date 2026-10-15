@@ -2,17 +2,9 @@ import { LoginUserDto } from "@/utils/dtos";
 import { loginSchema } from "@/utils/validationSchemas";
 import { NextResponse, NextRequest } from "next/server";
 import prisma from "@/utils/db";
-import bcrypt from "bcryptjs"; //dont forget install type of it
+import bcrypt from "bcryptjs"; 
 import { setCookie } from "@/utils/generateToken";
-// import { JWTPayload } from "@/utils/types";
-// import { setCookie } from '@/utils/generateToken';
 
-/**
- *  @method  POST
- *  @route   ~/api/users/login
- *  @desc    Login User [(Log In) (Sign In) (تسجیل الدخول)]
- *  @access  public
- */
 export async function POST(request: NextRequest) {
   try {
     const body = (await request.json()) as LoginUserDto;

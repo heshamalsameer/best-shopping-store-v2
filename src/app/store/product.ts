@@ -1,7 +1,6 @@
 import { Product } from '@prisma/client';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-
 interface ProductState {
   allProducts: Product[];
 }
@@ -14,8 +13,8 @@ const productSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    addProducts(state, action: PayloadAction<Product>) {
-      state.allProducts = state.allProducts.concat(action.payload)
+    addProducts(state, action: PayloadAction<Product[]>) {
+      state.allProducts = action.payload;
     },
     addProduct(state, action: PayloadAction<Product>) {
       state.allProducts.push(action.payload);
@@ -28,7 +27,6 @@ const productSlice = createSlice({
           return action.payload
         }
       })
-      // state.allProducts.push(action.payload);
     },
     removeProduct(state, action: PayloadAction<number>) {
       state.allProducts = state.allProducts.filter(product => product.id !== action.payload);
@@ -36,8 +34,6 @@ const productSlice = createSlice({
   },
 });
 
-// Export actions
 export const {addProducts,editProduct, addProduct, removeProduct } = productSlice.actions;
 
-// Export reducer
 export default productSlice.reducer;

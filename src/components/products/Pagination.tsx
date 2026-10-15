@@ -34,7 +34,7 @@ const Pagination = ({ pageNumber, pages, route }: PaginationProps) => {
           {page}
         </Link>
       ))}
-      {pageNumber !== pages && (
+      {pageNumber < pages && (
         <Link
           href={`${route}?pageNumber=${next}`}
           className="border border-gray-700 text-gray-700 py-1 px-3 font-bold text-xl cursor-pointer hover:bg-gray-200 transition"

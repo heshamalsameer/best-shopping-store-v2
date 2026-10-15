@@ -7,12 +7,6 @@ interface Props {
     params: { id: string };
 }
 
-/**
- *  @method  PUT
- *  @route   ~/api/comments/:id
- *  @desc    Update Comment
- *  @access  private (only owner of the comment)
- */
 export async function PUT(request: NextRequest, { params }: Props) {
     try {
         const comment = await prisma.comment.findUnique({ where: { id: parseInt(params.id) } });
@@ -44,12 +38,6 @@ export async function PUT(request: NextRequest, { params }: Props) {
     }
 }
 
-/**
- *  @method  DELETE
- *  @route   ~/api/comments/:id
- *  @desc    Delete Comment
- *  @access  private (only admin OR owner of the comment)
- */
 export async function DELETE(request: NextRequest, { params }: Props) {
     try {
         const comment = await prisma.comment.findUnique({ where: { id: parseInt(params.id) } });

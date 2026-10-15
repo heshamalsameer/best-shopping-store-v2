@@ -6,12 +6,6 @@ import { PRODUCT_PER_PAGE } from "@/utils/constants";
 import { verifyToken } from "@/utils/verifyToken";
 import { CreateProductDto } from "@/utils/dtos";
 
-/**
- *  @method  GET
- *  @route   ~/api/products
- *  @desc    Get Products By Page Number
- *  @access  public
- */
 export async function GET(request: NextRequest) {
   try {
     const pageNumber = request.nextUrl.searchParams.get("pageNumber") || "1";
@@ -31,12 +25,6 @@ export async function GET(request: NextRequest) {
   }
 }
 
-/**
- *  @method  POST
- *  @route   ~/api/products
- *  @desc    Create New Product
- *  @access  private (only admin can create product)
- */
 
 
 export async function POST(request: NextRequest) {

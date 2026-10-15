@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Best Shopping
 
-## Getting Started
+An online store for developer gear built with **Next.js 14 (App Router)**, **Prisma + PostgreSQL**, **Redux Toolkit** and **Tailwind CSS**.
 
-First, run the development server:
+## Features
+- Product catalogue with search, pagination and reviews
+- Cart with quantities, live totals, free-shipping progress and discount codes (`WELCOME10`, `DEV20`)
+- Checkout with shipping details and **simulated card payment** or cash on delivery
+- Orders page with status tracker (Pending → Paid → Processing → Shipped → Delivered), history and printable invoice; customers can cancel before shipping
+- **Live support chat** (Stream Chat): customers chat with the team from `/support` (or “Need help with this order?”); admins answer from the dashboard inbox with unread counts, typing indicators and read receipts
+- Admin dashboard: stats, add / edit products (Cloudinary upload or image link), manage comments and update order status
 
+## Demo accounts
+| Role | Email | Password |
+| --- | --- | --- |
+| Customer | demo@bestshopping.dev | demo1234 |
+| Admin | admin@gmail.com | 123456 |
+
+Test cards (no real money): `4242 4242 4242 4242` approved · `4000 0000 0000 0002` declined — any future expiry and any CVC.
+
+## Getting started
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env          # fill DATABASE_URL, JWT_SECRET, Cloudinary and Stream keys
+npm install                   # also runs `prisma generate`
+npm run db:migrate            # applies prisma/migrations
+npm run db:seed               # creates the demo accounts (+ products if empty)
+npm run dev                   # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Support chat (Stream)
+1. Create a free app on [getstream.io](https://getstream.io/dashboard) (Chat product).
+2. Copy the app's **Key** and **Secret** into `STREAM_API_KEY` / `STREAM_API_SECRET`.
+3. Restart the server. Each customer gets a private channel `support-<userId>` shared with all admins — nothing else to configure.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Cloudinary
+Set `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` and an **unsigned** upload preset in `NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET` (Cloudinary → Settings → Upload → Upload presets). Without them the admin form still works with a pasted image URL.

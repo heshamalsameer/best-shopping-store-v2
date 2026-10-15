@@ -11,12 +11,6 @@ interface Props {
   params: { id: string };
 }
 
-/**
- *  @method  DELETE
- *  @route   ~/api/users/profile/:id
- *  @desc    Delete Profile
- *  @access  private (only user himself can delete his account)
- */
 export async function DELETE(request: NextRequest, { params }: Props) {
   try {
     const user = await prisma.user.findUnique({
@@ -27,26 +21,11 @@ export async function DELETE(request: NextRequest, { params }: Props) {
       return NextResponse.json({ message: "user not found" }, { status: 404 });
     }
 
-    // const authToken = request.headers.get("authToken") as string;
-    // if (!authToken) {
-    //   return NextResponse.json(
-    //     { message: "not token provided, acces denied" },
-    //     { status: 401 } //Unauthorized
-    //   );
-    // }
-    // const jwtToken = request.cookies.get("jwtToken");
-    // const token = jwtToken?.value as string;
 
-    // const userFromToken = jwt.verify(
-    //   token,
-    //   process.env.JWT_SECRET as string
-    // ) as JWTPayload;
     const userFromToken = verifyToken(request);
     if (userFromToken !== null && userFromToken.id === user.id) {
-      // deleting the user
       await prisma.user.delete({ where: { id: parseInt(params.id) } });
 
-      // deleting the comments that belong to this user
       const commentIds = user?.comments.map((comment) => comment.id);
       await prisma.comment.deleteMany({
         where: {
@@ -60,35 +39,12 @@ export async function DELETE(request: NextRequest, { params }: Props) {
       );
     }
 
-    // if (userFromToken.id === user.id) {
-    //   await prisma.user.delete({ where: { id: parseInt(params.id) } });
-    //   return NextResponse.json(
-    //     { message: "your profile has been deleted" },
-    //     { status: 200 }
-    //   );
-    // }
     return NextResponse.json(
       { message: "onlu uder himself can delete his profile, forbidden" },
-      { status: 403 } //forbidden
+      { status: 403 } 
     );
-    // const userFromToken = verifyToken(request);
-    // if (userFromToken !== null && userFromToken.id === user.id) {
-    //   // deleting the user
-    //   await prisma.user.delete({ where: { id: parseInt(params.id) } });
 
-    //   // deleting the comments that belong to this user
-    //   const commentIds = user?.comments.map((comment) => comment.id);
-    //   await prisma.comment.deleteMany({
-    //     where: {
-    //       id: { in: commentIds },
-    //     },
-    //   });
 
-    //   return NextResponse.json(
-    //     { message: "your profile (account) has been deleted" },
-    //     { status: 200 }
-    //   );
-    // }
   } catch (error) {
     return NextResponse.json(
       { message: "internal server error" },
@@ -97,12 +53,6 @@ export async function DELETE(request: NextRequest, { params }: Props) {
   }
 }
 
-/**
- *  @method  GET
- *  @route   ~/api/users/profile/:id
- *  @desc    Get Profile By Id
- *  @access  private (only user himself can get his account/profile)
- */
 export async function GET(request: NextRequest, { params }: Props) {
   try {
     const user = await prisma.user.findUnique({
@@ -137,12 +87,6 @@ export async function GET(request: NextRequest, { params }: Props) {
   }
 }
 
-/**
- *  @method  PUT
- *  @route   ~/api/users/profile/:id
- *  @desc    Update Profile
- *  @access  private (only user himself can update his account/profile)
- */
 export async function PUT(request: NextRequest, { params }: Props) {
   try {
     const user = await prisma.user.findUnique({

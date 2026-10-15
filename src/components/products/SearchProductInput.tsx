@@ -9,14 +9,14 @@ const SearchProductInput = () => {
   const formSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log({ searchText });
-    router.push(`/products/search?searchText=${searchText}`);
+    if (!searchText.trim()) return;
+    router.push(`/products/search?searchText=${encodeURIComponent(searchText.trim())}`);
   };
 
   return (
     <form onSubmit={formSubmitHandler} className="my-5 w-full md:w-2/3 m-auto">
       <input
-        className="w-full  p-3 rounded text-xl border-none text-gray-900"
+        className="w-full p-3 rounded text-xl border-2 border-transparent text-gray-900 outline-none focus:border-blue-600 transition"
         type="search"
         placeholder="Search for product"
         value={searchText}

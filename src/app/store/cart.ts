@@ -1,7 +1,6 @@
 import { Cart } from '@prisma/client';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-
 interface CartState {
   cartProducts: Cart[];
 }
@@ -18,21 +17,23 @@ const cartSlice = createSlice({
       state.cartProducts = action.payload;
     },
     addToCart(state, action: PayloadAction<Cart>) {
-      const existingItem = state.cartProducts.find(item => item.id === action.payload.id);
-      if (existingItem) {
-        state.cartProducts = state.cartProducts
-      } else {
-        state.cartProducts.push(action.payload);
-      }
+      const index = state.cartProducts.findIndex(item => item.id === action.payload.id);
+      if (index >= 0) state.cartProducts[index] = action.payload;
+      else state.cartProducts.push(action.payload);
+    },
+    setQuantity(state, action: PayloadAction<{ id: number; quantity: number }>) {
+      const item = state.cartProducts.find(i => i.id === action.payload.id);
+      if (item) item.quantity = action.payload.quantity;
     },
     removeFromCart(state, action: PayloadAction<number>) {
       state.cartProducts = state.cartProducts.filter(item => item.id !== action.payload);
     },
+    clearCart(state) {
+      state.cartProducts = [];
+    },
   },
 });
 
-// Export actions
-export const {addCartProducts, addToCart, removeFromCart } = cartSlice.actions;
+export const { addCartProducts, addToCart, setQuantity, removeFromCart, clearCart } = cartSlice.actions;
 
-// Export reducer
 export default cartSlice.reducer;

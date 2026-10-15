@@ -29,9 +29,9 @@ const SearchArticlePage = async ({
               {searchText}
             </span>
           </h1>
-          <div className="flex items-center justify-center flex-wrap gap-7">
-            {products.map((item) => (
-              <ProductItem key={item.id} product={item} token={token} />
+          <div className="flex items-stretch justify-center flex-wrap gap-7 mb-10">
+            {products.map((item, i) => (
+              <ProductItem key={item.id} product={item} token={token} index={i} />
             ))}
           </div>
         </>

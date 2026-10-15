@@ -4,12 +4,6 @@ import { verifyToken } from "@/utils/verifyToken";
 import { CreateCommentDto } from "@/utils/dtos";
 import { createCommentShema } from "@/utils/validationSchemas";
 
-/**
- *  @method  POST
- *  @route   ~/api/comments
- *  @desc    Create New Comment
- *  @access  private (only logged in user)
- */
 export async function POST(request: NextRequest) {
   try {
     const user = verifyToken(request);
@@ -46,12 +40,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-/**
- *  @method  GET
- *  @route   ~/api/comments
- *  @desc    Get All Comments
- *  @access  private (only admin)
- */
 export async function GET(request: NextRequest) {
   try {
     const user = verifyToken(request);
